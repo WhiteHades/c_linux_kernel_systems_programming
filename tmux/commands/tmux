@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)
+current_dir=$(pwd -P)
+system_tmux=$(PATH=/usr/bin:/bin command -v tmux)
+
+if (( $# == 0 )); then
+  case "$current_dir" in
+    "$repo_root"/0[1-6]_*)
+      TMUX_LEARNING_SYSTEM_TMUX=$system_tmux \
+        exec "$repo_root/tmux/tmux-learning-session"
+      ;;
+  esac
+fi
+
+exec "$system_tmux" "$@"
