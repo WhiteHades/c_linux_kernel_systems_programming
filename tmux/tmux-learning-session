@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+current_dir=$(pwd -P)
+relative_path=${current_dir#"$repo_root"/}
+book_dir=${relative_path%%/*}
+
+case "$book_dir" in
+  0[1-6]_*) ;;
+  *)
+    printf 'tmux-learning-session: %s is not inside a numbered learning directory\n' "$current_dir" >&2
+    exit 2
+    ;;
+esac
+
+if [[ $current_dir != "$repo_root/$book_dir" && $current_dir != "$repo_root/$book_dir/"* ]]; then
+  printf 'tmux-learning-session: %s is outside %s\n' "$current_dir" "$repo_root" >&2
+  exit 2
+fi
+
+tmux_options=()
+if [[ -n ${TMUX_LEARNING_SOCKET:-} ]]; then
+  tmux_options+=(-L "$TMUX_LEARNING_SOCKET")
+fi
+if [[ -n ${TMUX_LEARNING_CONFIG:-} ]]; then
+  tmux_options+=(-f "$TMUX_LEARNING_CONFIG")
+fi
+
+tmux_command() {
+  command tmux "${tmux_options[@]}" "$@"
+}
+
+attach_or_switch() {
+  if [[ ${TMUX_LEARNING_NO_ATTACH:-0} == 1 ]]; then
+    return
+  fi
+
+  if [[ -n ${TMUX:-} ]]; then
+    tmux_command switch-client -t "$book_dir"
+  else
+    tmux_command attach-session -t "$book_dir"
+  fi
+}
+
+if tmux_command has-session -t "$book_dir" 2>/dev/null; then
+  attach_or_switch
+  exit
+fi
+
+if top_pane=$(tmux_command new-session -d -P -F '#{pane_id}' -s "$book_dir" -c "$current_dir" 2>/dev/null); then
+  tmux_command split-window -v -p 50 -t "$top_pane" -c "$current_dir"
+  tmux_command select-pane -t "$top_pane"
+elif ! tmux_command has-session -t "$book_dir" 2>/dev/null; then
+  printf 'tmux-learning-session: could not create session %s\n' "$book_dir" >&2
+  exit 1
+fi
+
+attach_or_switch
