@@ -11,6 +11,12 @@ this is where i am learning c, modern c, linux, linux internals, and linux syste
 
 each part builds on the one before it, and code is added only as i reach that part of the path.
 
+## tmux workflow
+
+running bare `tmux` from any numbered book directory, or one of its subdirectories, opens a session named after that book directory. a new session starts with two top-and-bottom panes in the current directory; later invocations reuse the existing session without changing its panes.
+
+the behavior is fully contained in this repository. `mise.toml` puts the tracked `tmux/commands/tmux` wrapper first on `PATH`; the wrapper delegates managed sessions to `tmux/tmux-learning-session` and leaves all other tmux commands unchanged. after cloning, run `mise trust`. `tests/test-tmux-learning-session` verifies all six directories on an isolated tmux socket.
+
 ## books
 
 1. [c programming a modern approach second edition](https://knking.com/books/c2/) by k. n. king
