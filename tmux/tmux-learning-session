@@ -21,6 +21,7 @@ if [[ $current_dir != "$repo_root/$book_dir" && $current_dir != "$repo_root/$boo
 fi
 
 tmux_options=()
+system_tmux=${TMUX_LEARNING_SYSTEM_TMUX:-$(PATH=/usr/bin:/bin command -v tmux)}
 if [[ -n ${TMUX_LEARNING_SOCKET:-} ]]; then
   tmux_options+=(-L "$TMUX_LEARNING_SOCKET")
 fi
@@ -29,7 +30,7 @@ if [[ -n ${TMUX_LEARNING_CONFIG:-} ]]; then
 fi
 
 tmux_command() {
-  command tmux "${tmux_options[@]}" "$@"
+  "$system_tmux" "${tmux_options[@]}" "$@"
 }
 
 attach_or_switch() {
