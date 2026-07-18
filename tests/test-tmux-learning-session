@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+launcher="$repo_root/tmux/tmux-learning-session"
+socket="learning-session-test-$$"
+system_tmux=$(PATH=/usr/bin:/bin command -v tmux)
+
+tmux_test() {
+  "$system_tmux" -L "$socket" -f /dev/null "$@"
+}
+
+cleanup() {
+  tmux_test kill-server 2>/dev/null || true
+}
+trap cleanup EXIT
+
+fail() {
+  printf 'FAIL: %s\n' "$1" >&2
+  exit 1
+}
+
+resolved_tmux=$(mise exec -- bash -c 'command -v tmux')
+[[ $(readlink -f "$resolved_tmux") == "$repo_root/tmux/commands/tmux" ]] ||
+  fail 'mise did not put the repository tmux wrapper first on PATH'
+[[ $(mise exec -- tmux -V) == $("$system_tmux" -V) ]] ||
+  fail 'tmux arguments were not delegated to the system binary'
+
+book_count=0
+for book_path in "$repo_root"/0[1-6]_*; do
+  ((book_count += 1))
+  book_name=${book_path##*/}
+
+  (
+    cd "$book_path"
+    TMUX_LEARNING_SOCKET=$socket \
+      TMUX_LEARNING_CONFIG=/dev/null \
+      TMUX_LEARNING_NO_ATTACH=1 \
+      mise exec -- tmux
+  )
+
+  [[ $(tmux_test display-message -p -t "$book_name" '#{session_name}') == "$book_name" ]] ||
+    fail "$book_name session name"
+  [[ $(tmux_test list-panes -t "$book_name" | wc -l) -eq 2 ]] ||
+    fail "$book_name pane count"
+  [[ $(tmux_test list-panes -t "$book_name" -F '#{pane_current_path}' | sort -u) == "$book_path" ]] ||
+    fail "$book_name pane working directories"
+  [[ $(tmux_test list-panes -t "$book_name" -F '#{pane_left}' | sort -u) == 0 ]] ||
+    fail "$book_name panes are not stacked top and bottom"
+  [[ $(tmux_test list-panes -t "$book_name" -F '#{pane_top}' | sort -nu | wc -l) -eq 2 ]] ||
+    fail "$book_name panes do not occupy separate rows"
+  mapfile -t pane_heights < <(tmux_test list-panes -t "$book_name" -F '#{pane_height}' | sort -n)
+  (( pane_heights[1] - pane_heights[0] <= 1 )) ||
+    fail "$book_name panes are not split evenly"
+  [[ $(tmux_test list-panes -t "$book_name" -F '#{pane_top} #{pane_active}' | sort -n | sed -n '1s/.* //p') == 1 ]] ||
+    fail "$book_name top pane is not active"
+
+  (
+    cd "$book_path"
+    TMUX_LEARNING_SOCKET=$socket \
+      TMUX_LEARNING_CONFIG=/dev/null \
+      TMUX_LEARNING_NO_ATTACH=1 \
+      mise exec -- tmux
+  )
+  [[ $(tmux_test list-panes -t "$book_name" | wc -l) -eq 2 ]] ||
+    fail "$book_name gained panes when reused"
+done
+
+[[ $book_count -eq 6 ]] || fail "expected six numbered book directories, found $book_count"
+
+if (
+  cd "$repo_root"
+  TMUX_LEARNING_SOCKET=$socket \
+    TMUX_LEARNING_CONFIG=/dev/null \
+    TMUX_LEARNING_NO_ATTACH=1 \
+    "$launcher" 2>/dev/null
+); then
+  fail 'repository root should not create a managed session'
+fi
+
+printf 'PASS: all six learning sessions use stable top/bottom layouts\n'
