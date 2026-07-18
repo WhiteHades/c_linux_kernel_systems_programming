@@ -17,6 +17,10 @@ running bare `tmux` from any numbered book directory, or one of its subdirectori
 
 the behavior is fully contained in this repository. `mise.toml` puts the tracked `tmux/commands/tmux` wrapper first on `PATH`; the wrapper delegates managed sessions to `tmux/tmux-learning-session` and leaves all other tmux commands unchanged. after cloning, run `mise trust`. `tests/test-tmux-learning-session` verifies all six directories on an isolated tmux socket.
 
+## c tooling
+
+neovim formats c files automatically on save with `clang-format`. `.clang-format` defines the repository's llvm-based two-space style, while `.clangd` uses c23 with strict warnings as the modern editor baseline. gcc remains the final compatibility check: use the book's exact mode, such as `-std=c90`, `-std=c99`, or `-std=c23`, when the distinction matters.
+
 ## books
 
 1. [c programming a modern approach second edition](https://knking.com/books/c2/) by k. n. king
