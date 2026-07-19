@@ -73,7 +73,7 @@ done
 
 (( learning_count > 0 )) || fail 'no learning directories found'
 
-nested_path="$repo_root/linux_kernel_programming/ch1"
+nested_path="$repo_root/linux_kernel_programming/ch01"
 tmux_test kill-session -t linux_kernel_programming
 (
   cd "$nested_path"

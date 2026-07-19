@@ -83,8 +83,8 @@ with<br>
 
 
  - page 264:
-    - Added the ch6/countem2.sh Bash script to the repo; it complements the ch6/countem.sh script, adding on a few details
-    - An error in the ch6/countem2.sh script has now (27dec2024) been fixed (fix calc of # of kernel-mode stacks in memory; feeing sheepish again!)
+    - Added the ch06/countem2.sh Bash script to the repo; it complements the ch06/countem.sh script, adding on a few details
+    - An error in the ch06/countem2.sh script has now (27dec2024) been fixed (fix calc of # of kernel-mode stacks in memory; feeing sheepish again!)
 
 - Ch 12
     - Figure 12.7 : circled point #4 should read: "tB now unlocks; tA and *tC* 'fight' for the lock; ..."

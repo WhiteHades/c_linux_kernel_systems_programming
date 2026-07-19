@@ -1,4 +1,4 @@
-# ch5/lkm_template/Makefile
+# ch05/lkm_template/Makefile
 # ***************************************************************
 # This program is part of the source code released for the book
 #  "Linux Kernel Programming" 2E
@@ -154,6 +154,7 @@ clean:
 	@echo "--- cleaning ---"
 	@echo
 	make -C $(KDIR) M=$(PWD) clean
+	rm -f ../../../klib.o ../../../.klib.o.cmd
 # from 'indent'; comment out if you want the backup kept
 	rm -f *~
 

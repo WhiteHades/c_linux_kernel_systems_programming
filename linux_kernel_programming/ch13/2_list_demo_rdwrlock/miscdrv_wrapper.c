@@ -13,7 +13,7 @@
  * Brief Description:
  *
  * This module is based upon our earlier Ch 6 demo for manipulating lists
- * (via the kernel's builtin list.h routines): ch6/list_demo.
+ * (via the kernel's builtin list.h routines): ch06/list_demo.
  * There, it was unprotected from concurrent access (which is just wrong).
  * So here, we protect against concurrent access by employing the reader-writer
  * spinlock.

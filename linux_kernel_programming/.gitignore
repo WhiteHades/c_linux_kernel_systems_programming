@@ -17,7 +17,7 @@ kbuild_log
 kint.waste
 kmods.waste
 lockstats.txt
-/ch9/oom_killer_try/oom_killer_try
+/ch09/oom_killer_try/oom_killer_try
 /ch11/cgroups/cpu_constrain/primegen/primegen
 /ch11/cpu_affinity/userspc_cpuaffinity
 /ch12/*/rdwr_test_secret
