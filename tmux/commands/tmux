@@ -7,12 +7,19 @@ current_dir=$(pwd -P)
 system_tmux=$(PATH=/usr/bin:/bin command -v tmux)
 
 if (( $# == 0 )); then
-  case "$current_dir" in
-    "$repo_root"/0[1-6]_*)
-      TMUX_LEARNING_SYSTEM_TMUX=$system_tmux \
-        exec "$repo_root/tmux/tmux-learning-session"
-      ;;
-  esac
+  if [[ $current_dir == "$repo_root/"* ]]; then
+    relative_path=${current_dir#"$repo_root"/}
+    learning_dir=${relative_path%%/*}
+    case "$learning_dir" in
+      .git | tests | tmux) ;;
+      *)
+        if [[ -d $repo_root/$learning_dir ]]; then
+          TMUX_LEARNING_SYSTEM_TMUX=$system_tmux \
+            exec "$repo_root/tmux/tmux-learning-session"
+        fi
+        ;;
+    esac
+  fi
 fi
 
 exec "$system_tmux" "$@"
