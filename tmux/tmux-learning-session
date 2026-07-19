@@ -4,21 +4,29 @@ set -euo pipefail
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 current_dir=$(pwd -P)
-relative_path=${current_dir#"$repo_root"/}
-book_dir=${relative_path%%/*}
 
-case "$book_dir" in
-  0[1-6]_*) ;;
-  *)
-    printf 'tmux-learning-session: %s is not inside a numbered learning directory\n' "$current_dir" >&2
-    exit 2
-    ;;
-esac
-
-if [[ $current_dir != "$repo_root/$book_dir" && $current_dir != "$repo_root/$book_dir/"* ]]; then
+if [[ $current_dir != "$repo_root/"* ]]; then
   printf 'tmux-learning-session: %s is outside %s\n' "$current_dir" "$repo_root" >&2
   exit 2
 fi
+
+relative_path=${current_dir#"$repo_root"/}
+learning_dir=${relative_path%%/*}
+
+case "$learning_dir" in
+  .git | tests | tmux)
+    printf 'tmux-learning-session: %s is not a learning directory\n' "$current_dir" >&2
+    exit 2
+    ;;
+  *)
+    if [[ ! -d $repo_root/$learning_dir ]]; then
+      printf 'tmux-learning-session: %s is not a learning directory\n' "$current_dir" >&2
+      exit 2
+    fi
+    ;;
+esac
+
+session_name=$learning_dir
 
 tmux_options=()
 system_tmux=${TMUX_LEARNING_SYSTEM_TMUX:-$(PATH=/usr/bin:/bin command -v tmux)}
@@ -39,22 +47,22 @@ attach_or_switch() {
   fi
 
   if [[ -n ${TMUX:-} ]]; then
-    tmux_command switch-client -t "$book_dir"
+    tmux_command switch-client -t "$session_name"
   else
-    tmux_command attach-session -t "$book_dir"
+    tmux_command attach-session -t "$session_name"
   fi
 }
 
-if tmux_command has-session -t "$book_dir" 2>/dev/null; then
+if tmux_command has-session -t "$session_name" 2>/dev/null; then
   attach_or_switch
   exit
 fi
 
-if top_pane=$(tmux_command new-session -d -P -F '#{pane_id}' -s "$book_dir" -c "$current_dir" 2>/dev/null); then
+if top_pane=$(tmux_command new-session -d -P -F '#{pane_id}' -s "$session_name" -c "$current_dir" 2>/dev/null); then
   tmux_command split-window -v -p 50 -t "$top_pane" -c "$current_dir"
   tmux_command select-pane -t "$top_pane"
-elif ! tmux_command has-session -t "$book_dir" 2>/dev/null; then
-  printf 'tmux-learning-session: could not create session %s\n' "$book_dir" >&2
+elif ! tmux_command has-session -t "$session_name" 2>/dev/null; then
+  printf 'tmux-learning-session: could not create session %s\n' "$session_name" >&2
   exit 1
 fi
 
