@@ -12,7 +12,7 @@
  ****************************************************************
  * Brief Description:
  * This kernel module is based upon our earlier kernel module from Ch 6:
- *  ch6/foreach/thrd_showall/thrd_showall.c. 
+ *  ch06/foreach/thrd_showall/thrd_showall.c. 
  * When, here, we refactor it to use the get_task_comm() routine to
  * retrieve the name of the thread, it's buggy!
  * The bug turns out to be a recursive locking issue, *detected by lockdep*.

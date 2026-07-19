@@ -50,7 +50,7 @@ int snprintf_lkp(char *buf, size_t maxsize, const char *fmt, ...)
 }
 
 /* minsysinfo:
- * Similar to our ch5/min_sysinfo code; it's just simpler (avoiding deps) to
+ * Similar to our ch05/min_sysinfo code; it's just simpler (avoiding deps) to
  * package this code into this small 'library' of sorts rather than to use it
  * via the module stacking approach.
  *
