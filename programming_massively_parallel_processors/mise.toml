@@ -1,0 +1,21 @@
+[tasks.setup]
+dir = "{{config_root}}"
+run = "bash study.sh fetch && bash ../scripts/book-container.sh setup local/study-pmpp:13.3.1"
+
+[tasks.shell]
+raw = true
+dir = "{{config_root}}"
+run = "BOOK_GPU=1 bash ../scripts/book-container.sh run local/study-pmpp:13.3.1 bash"
+
+[tasks.build]
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/study-pmpp:13.3.1 bash /opt/study.sh build"
+
+[tasks.run]
+raw = true
+dir = "{{config_root}}"
+run = "BOOK_GPU=1 bash ../scripts/book-container.sh run local/study-pmpp:13.3.1 bash /opt/study.sh run"
+
+[tasks.verify]
+dir = "{{config_root}}"
+run = "BOOK_GPU=1 bash ../scripts/book-container.sh run local/study-pmpp:13.3.1 /opt/verify-cuda"

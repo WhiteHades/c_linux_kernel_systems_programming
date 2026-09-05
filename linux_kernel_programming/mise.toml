@@ -1,0 +1,25 @@
+[tasks.setup]
+dir = "{{config_root}}"
+description = "Build the kernel programming environment"
+run = "bash ../scripts/book-container.sh setup local/linux-kernel-programming-2e:latest"
+
+[tasks.build]
+dir = "{{config_root}}"
+description = "Build a chapter target"
+run = "bash ../scripts/book-container.sh run local/linux-kernel-programming-2e:latest bash /opt/study.sh build"
+
+[tasks.run]
+dir = "{{config_root}}"
+description = "Run inside the disposable QEMU guest"
+run = "BOOK_KVM=\"${BOOK_KVM:-1}\" bash ../scripts/book-container.sh run local/linux-kernel-programming-2e:latest bash /opt/study.sh run"
+
+[tasks.shell]
+dir = "{{config_root}}"
+raw = true
+description = "Open the disposable QEMU guest shell"
+run = "BOOK_KVM=\"${BOOK_KVM:-1}\" bash ../scripts/book-container.sh run local/linux-kernel-programming-2e:latest bash /opt/study.sh shell"
+
+[tasks.verify]
+dir = "{{config_root}}"
+description = "Check the kernel programming tools and module build"
+run = "BOOK_KVM=\"${BOOK_KVM:-1}\" bash ../scripts/book-container.sh run local/linux-kernel-programming-2e:latest bash /opt/study.sh verify"

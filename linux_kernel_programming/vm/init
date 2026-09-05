@@ -1,0 +1,31 @@
+#!/bin/sh
+set -eu
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+export PATH
+
+mkdir -p /newroot
+
+echo "loading 9p modules"
+modprobe 9pnet
+modprobe 9pnet_virtio
+modprobe 9p
+
+mount -t 9p -o ro,trans=virtio,version=9p2000.L,msize=262144,cache=loose root /newroot
+mkdir -p /newroot/usr /newroot/etc /newroot/dev /newroot/proc /newroot/sys
+mkdir -p /newroot/workspace/code /newroot/workspace/exercises /newroot/workspace/.state
+mount -t 9p -o ro,trans=virtio,version=9p2000.L,msize=262144,cache=loose usr /newroot/usr
+mount -t 9p -o ro,trans=virtio,version=9p2000.L,msize=262144,cache=loose etc /newroot/etc
+mount -t proc proc /newroot/proc
+mount -t sysfs sysfs /newroot/sys
+mount -t devtmpfs devtmpfs /newroot/dev
+
+mount -t 9p -o trans=virtio,version=9p2000.L,msize=262144,cache=loose code /newroot/workspace/code
+mount -t 9p -o trans=virtio,version=9p2000.L,msize=262144,cache=loose exercises /newroot/workspace/exercises
+mount -t 9p -o trans=virtio,version=9p2000.L,msize=262144,cache=loose state /newroot/workspace/.state
+
+echo "Linux Kernel Programming guest"
+echo "kernel: $(cat /newroot/proc/sys/kernel/osrelease)"
+echo "code: /workspace/code"
+
+exec chroot /newroot /usr/local/bin/book-guest-init

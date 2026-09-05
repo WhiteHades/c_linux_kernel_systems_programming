@@ -1,0 +1,6 @@
+/.state/
+/code/**/*.o
+/code/**/*.d
+/code/**/*.s
+/code/libmodernC.a
+/code/*.exe

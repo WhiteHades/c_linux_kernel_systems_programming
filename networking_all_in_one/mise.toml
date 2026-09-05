@@ -1,0 +1,17 @@
+[tasks.setup]
+dir = "{{config_root}}"
+run = "bash study.sh setup"
+[tasks.shell]
+raw = true
+dir = "{{config_root}}"
+run = "bash study.sh shell"
+[tasks.run]
+raw = true
+dir = "{{config_root}}"
+run = "bash study.sh run"
+[tasks.verify]
+dir = "{{config_root}}"
+run = "bash study.sh verify"
+[tasks.stop]
+dir = "{{config_root}}"
+run = "bash study.sh stop"

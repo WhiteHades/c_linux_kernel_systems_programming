@@ -1,0 +1,6 @@
+/code/**/*.o
+/code/**/*.d
+/code/**/*.s
+/code/a.out
+/code/a.exe
+/.state/

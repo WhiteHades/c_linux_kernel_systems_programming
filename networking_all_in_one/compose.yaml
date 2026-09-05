@@ -1,0 +1,38 @@
+name: study-networking
+x-lab: &lab
+  image: local/study-networking:44
+  build: .
+  init: true
+  working_dir: /workspace/exercises
+  read_only: true
+  cap_drop: [ALL]
+  cap_add: [NET_RAW, NET_ADMIN, SETUID, SETGID, SETPCAP]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 256
+  mem_limit: 1g
+  cpus: 1
+  tmpfs: [/tmp, /run]
+  environment:
+    BOOK_UID: "${BOOK_UID:-1000}"
+    BOOK_GID: "${BOOK_GID:-1000}"
+    HOME: /workspace/.state/home
+    HISTFILE: /dev/null
+  volumes:
+    - ./exercises:/workspace/exercises
+    - ./.state:/workspace/.state
+  networks: [lab]
+services:
+  server:
+    <<: *lab
+    command: [python3, -m, http.server, '8080', --bind, 0.0.0.0]
+    healthcheck:
+      test: [CMD, curl, -fsS, http://127.0.0.1:8080/]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+  client:
+    <<: *lab
+    command: [sleep, infinity]
+networks:
+  lab:
+    internal: true

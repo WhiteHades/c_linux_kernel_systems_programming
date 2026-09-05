@@ -1,0 +1,22 @@
+# Private source material and local instructions
+/machine_learning_with_pytorch_and_scikit_learn.txt
+/AGENTS.md
+
+# Official checkout and contained state
+/code/
+/.state/
+/.tmp/
+/data/
+/models/
+/.env
+/.env.*
+
+# Notebook and ML outputs
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+*.joblib
+*.onnx
+*.pt
+*.pth
+*.safetensors

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOME=/workspace/.state/home
+XDG_CACHE_HOME=/workspace/.state/cache
+export PATH HOME XDG_CACHE_HOME
+
+mount -t tmpfs -o mode=0755,nosuid,nodev tmpfs /run
+mount -t tmpfs -o mode=1777,nosuid,nodev tmpfs /tmp
+mount -t tmpfs -o mode=0755,nosuid,nodev tmpfs /var
+mount -t cgroup2 cgroup2 /sys/fs/cgroup 2>/dev/null || true
+
+mkdir -p /workspace/code /workspace/exercises /workspace/.state
+
+echo "guest userland ready"
+echo "kernel: $(uname -r)"
+echo "code: /workspace/code"
+
+if [ -s /workspace/.state/guest-command ]; then
+    command="$(cat /workspace/.state/guest-command)"
+    : > /workspace/.state/guest-exit
+    /bin/bash -lc "$command"
+    status=$?
+    echo "$status" > /workspace/.state/guest-exit
+    sync
+    exec /usr/bin/busybox poweroff -f
+fi
+
+exec /bin/bash

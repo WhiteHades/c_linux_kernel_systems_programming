@@ -1,0 +1,25 @@
+[tasks.setup]
+dir = "{{config_root}}"
+description = "Build the embedded C environment"
+run = "bash setup.sh && bash ../scripts/book-container.sh setup local/bare-metal-embedded-c:latest"
+
+[tasks.build]
+dir = "{{config_root}}"
+description = "Build the selected embedded project"
+run = "bash ../scripts/book-container.sh run local/bare-metal-embedded-c:latest bash /opt/study.sh build"
+
+[tasks.run]
+dir = "{{config_root}}"
+description = "Show the selected firmware artifact"
+run = "bash ../scripts/book-container.sh run local/bare-metal-embedded-c:latest bash /opt/study.sh run"
+
+[tasks.shell]
+dir = "{{config_root}}"
+raw = true
+description = "Open the contained embedded C shell"
+run = "bash ../scripts/book-container.sh run local/bare-metal-embedded-c:latest bash /opt/study.sh shell"
+
+[tasks.verify]
+dir = "{{config_root}}"
+description = "Check the embedded C toolchain and sample"
+run = "bash ../scripts/book-container.sh run local/bare-metal-embedded-c:latest bash /opt/study.sh verify"

@@ -1,0 +1,51 @@
+[tasks.setup]
+dir = "{{config_root}}"
+description = "Build the C++ book environment"
+run = "./scripts/setup.sh"
+
+[tasks.build]
+dir = "{{config_root}}"
+description = "Build a chapter: mise run build -- 1"
+run = "./scripts/build.sh"
+
+[tasks.run]
+dir = "{{config_root}}"
+raw = true
+description = "Run a built example: mise run run -- Chapter01/eigen_samples/build/linalg_eigen"
+run = "./scripts/run.sh"
+
+[tasks.shell]
+dir = "{{config_root}}"
+raw = true
+description = "Open the contained C++ shell"
+run = "./scripts/shell.sh"
+
+[tasks.verify]
+dir = "{{config_root}}"
+description = "Check the environment and Chapter 1"
+run = "./scripts/verify.sh"
+
+[tasks."gpu:verify"]
+dir = "{{config_root}}"
+description = "Check the optional NVIDIA runtime"
+run = "./scripts/gpu_verify.sh"
+
+[tasks.doctor]
+dir = "{{config_root}}"
+description = "Check the host and project"
+run = "./scripts/doctor.sh"
+
+[tasks.status]
+dir = "{{config_root}}"
+description = "Show the working tree, storage, and containers"
+run = "./scripts/status.sh"
+
+[tasks.storage]
+dir = "{{config_root}}"
+description = "Show project and Docker storage use"
+run = "./scripts/storage.sh"
+
+[tasks.clean]
+dir = "{{config_root}}"
+description = "Show the project-only cleanup plan"
+run = "./scripts/cleanup.sh --dry-run"

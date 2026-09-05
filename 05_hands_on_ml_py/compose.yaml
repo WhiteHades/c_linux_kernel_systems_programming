@@ -1,0 +1,91 @@
+x-book-common: &book-common
+  platform: linux/amd64
+  read_only: true
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+  working_dir: /workspace/code
+  environment:
+    HOME: /workspace/state/home
+    MPLCONFIGDIR: /workspace/state/matplotlib
+    PIP_CACHE_DIR: /workspace/state/pip-cache
+    JUPYTER_CONFIG_DIR: /workspace/state/jupyter
+    JUPYTER_DATA_DIR: /workspace/state/jupyter-data
+    JUPYTER_RUNTIME_DIR: /workspace/state/jupyter-runtime
+  volumes:
+    - ./code:/workspace/code
+    - ./.state/runtime:/workspace/state
+    - ./data:/workspace/data
+    - ./models:/workspace/models
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev,size=2g,mode=1777
+  shm_size: 2gb
+  ports:
+    - "127.0.0.1:${JUPYTER_PORT:-8888}:8888"
+  stop_grace_period: 10s
+
+x-book-build: &book-build
+  context: ./container
+  dockerfile: Dockerfile
+  args:
+    USER_ID: "${LOCAL_UID:-1000}"
+    GROUP_ID: "${LOCAL_GID:-1000}"
+
+services:
+  core:
+    <<: *book-common
+    image: local/hands-on-ml-py:core
+    build:
+      <<: *book-build
+      target: core
+    profiles: [core]
+
+  torch:
+    <<: *book-common
+    image: local/hands-on-ml-py:torch
+    build:
+      <<: *book-build
+      target: torch
+    profiles: [torch]
+
+  gnn:
+    <<: *book-common
+    image: local/hands-on-ml-py:gnn
+    build:
+      <<: *book-build
+      target: gnn
+    profiles: [gnn]
+
+  rl:
+    <<: *book-common
+    image: local/hands-on-ml-py:rl
+    build:
+      <<: *book-build
+      target: rl
+    profiles: [rl]
+
+  gpu:
+    <<: *book-common
+    image: local/hands-on-ml-py:gpu
+    build:
+      <<: *book-build
+      target: gpu
+    profiles: [gpu]
+    environment:
+      HOME: /workspace/state/home
+      MPLCONFIGDIR: /workspace/state/matplotlib
+      PIP_CACHE_DIR: /workspace/state/pip-cache
+      JUPYTER_CONFIG_DIR: /workspace/state/jupyter
+      JUPYTER_DATA_DIR: /workspace/state/jupyter-data
+      JUPYTER_RUNTIME_DIR: /workspace/state/jupyter-runtime
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

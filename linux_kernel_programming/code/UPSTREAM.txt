@@ -1,0 +1,2 @@
+author source: https://github.com/PacktPublishing/Linux-Kernel-Programming_2E
+revision: 2a088aa5b47b7db4dbf875138fa0bf8cc2387de2

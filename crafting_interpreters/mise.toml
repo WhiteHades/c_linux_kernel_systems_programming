@@ -1,0 +1,36 @@
+[tasks.setup]
+description = "Fetch the pinned official source and build the environment"
+dir = "{{config_root}}"
+run = "bash setup.sh"
+
+[tasks.build]
+description = "Build jlox and clox"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/crafting-interpreters:16 bash /opt/study.sh build"
+
+[tasks.run]
+description = "Run jlox or clox"
+raw = true
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/crafting-interpreters:16 bash /opt/study.sh run"
+
+[tasks.test]
+description = "Run the official interpreter tests"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/crafting-interpreters:16 bash /opt/study.sh test"
+
+[tasks.chapters]
+description = "Build every chapter snapshot"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/crafting-interpreters:16 bash /opt/study.sh chapters"
+
+[tasks.verify]
+description = "Build and smoke-test both interpreters"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/crafting-interpreters:16 bash /opt/study.sh verify"
+
+[tasks.shell]
+description = "Open the contained shell"
+raw = true
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/crafting-interpreters:16 bash /opt/study.sh shell"

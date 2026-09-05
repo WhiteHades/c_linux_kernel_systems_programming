@@ -1,0 +1,21 @@
+# Private source material and local instructions
+/hands_on_machine_learning_with_cpp.txt
+/AGENTS.md
+
+# Upstream checkout and contained state
+/code/
+/.state/
+/.tmp/
+/data/
+/models/
+/.env
+/.env.*
+
+# Generated ML and Android artifacts
+*.onnx
+*.pt
+*.pth
+*.safetensors
+*.tflite
+*.apk
+*.aab

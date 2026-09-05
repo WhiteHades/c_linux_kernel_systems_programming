@@ -1,0 +1,26 @@
+[tasks.setup]
+description = "Build the contained C++23 environment"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh setup local/introducing-cpp:16"
+
+[tasks.build]
+description = "Build one C++ source file"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/introducing-cpp:16 bash /opt/study.sh build"
+
+[tasks.run]
+description = "Build and run one C++ source file"
+raw = true
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/introducing-cpp:16 bash /opt/study.sh run"
+
+[tasks.verify]
+description = "Compile and run the starter examples"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/introducing-cpp:16 bash /opt/study.sh verify"
+
+[tasks.shell]
+description = "Open the contained shell"
+raw = true
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/introducing-cpp:16 bash /opt/study.sh shell"

@@ -1,0 +1,26 @@
+[tasks.setup]
+dir = "{{config_root}}"
+description = "Build the OS development environment"
+run = "bash setup.sh && bash ../scripts/book-container.sh setup local/little-os-book:latest"
+
+[tasks.build]
+dir = "{{config_root}}"
+description = "Build the current OS project"
+run = "bash ../scripts/book-container.sh run local/little-os-book:latest bash /opt/study.sh build"
+
+[tasks.run]
+dir = "{{config_root}}"
+description = "Boot the current OS project"
+raw = true
+run = "bash ../scripts/book-container.sh run local/little-os-book:latest bash /opt/study.sh run"
+
+[tasks.shell]
+dir = "{{config_root}}"
+raw = true
+description = "Open the contained OS development shell"
+run = "bash ../scripts/book-container.sh run local/little-os-book:latest bash /opt/study.sh shell"
+
+[tasks.verify]
+dir = "{{config_root}}"
+description = "Check the OS development tools"
+run = "bash ../scripts/book-container.sh run local/little-os-book:latest bash /opt/study.sh verify"

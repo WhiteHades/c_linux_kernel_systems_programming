@@ -1,0 +1,10 @@
+*
+!Dockerfile
+!code/
+!code/tool/
+!code/tool/**
+code/tool/.dart_tool/
+code/book/
+code/site/
+.state/
+exercises/

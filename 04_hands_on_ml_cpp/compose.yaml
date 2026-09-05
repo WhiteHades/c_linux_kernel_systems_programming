@@ -1,0 +1,99 @@
+name: hands-on-ml-cpp
+
+x-book-service: &book-service
+  platform: linux/amd64
+  build:
+    context: ./container
+    dockerfile: Dockerfile
+    target: core
+    args:
+      MAX_JOBS: "8"
+  image: local/hands-on-ml-cpp:book-baseline
+  init: true
+  user: "${BOOK_UID:-1000}:${BOOK_GID:-1000}"
+  working_dir: /workspace/code
+  read_only: true
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  pids_limit: 4096
+  tmpfs:
+    - /tmp:rw,nosuid,nodev,noexec,size=2g,uid=1000,gid=1000,mode=1770
+  environment:
+    HOME: /workspace/state/home
+    HISTFILE: /workspace/state/bash_history
+    BOOK_PREFIX: /opt/book/libs
+    BOOK_VENV: /opt/book/venv
+    MAX_JOBS: "8"
+    XDG_CACHE_HOME: /workspace/state/cache
+    XDG_CONFIG_HOME: /workspace/state/config
+    XDG_DATA_HOME: /workspace/state/data
+  volumes:
+    - type: bind
+      source: ./code
+      target: /workspace/code
+    - type: bind
+      source: ./data
+      target: /workspace/data
+    - type: bind
+      source: ./models
+      target: /workspace/models
+    - type: bind
+      source: ./.state
+      target: /workspace/state
+  networks:
+    - book-net
+  stdin_open: true
+  tty: true
+  stop_grace_period: 10s
+
+services:
+  book:
+    <<: *book-service
+    command:
+      - shell
+
+  gpu:
+    <<: *book-service
+    profiles:
+      - gpu
+    build:
+      context: ./container
+      dockerfile: Dockerfile
+      target: gpu
+      args:
+        MAX_JOBS: "8"
+    image: local/hands-on-ml-cpp:gpu
+    gpus: all
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      HOME: /workspace/state/home
+    command:
+      - verify-gpu
+
+  android:
+    <<: *book-service
+    build:
+      context: ./container
+      dockerfile: Dockerfile
+      target: android
+      args:
+        MAX_JOBS: "8"
+    image: local/hands-on-ml-cpp:android
+    profiles:
+      - android
+    environment:
+      ANDROID_HOME: /development/android
+      ANDROID_SDK_ROOT: /development/android
+      ANDROID_NDK_HOME: /development/android/ndk/26.1.10909125
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+      HOME: /workspace/state/home
+      GRADLE_USER_HOME: /workspace/state/gradle
+    command:
+      - verify-android
+
+networks:
+  book-net:
+    driver: bridge

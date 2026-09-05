@@ -1,0 +1,5 @@
+# Latest versions that remain compatible with the C++ book image and YOLOv5 v7.
+numpy==1.26.4
+opencv-python==4.10.0.84
+protobuf==5.29.6
+tensorboard==2.17.1

@@ -1,0 +1,52 @@
+[tasks.setup]
+dir = "{{config_root}}"
+description = "Build and check the book environments"
+run = "./scripts/setup.sh"
+
+[tasks.run]
+dir = "{{config_root}}"
+raw = true
+description = "Run a chapter script: mise run run -- ch02/ch02.py"
+run = "./scripts/run.sh"
+
+[tasks.lab]
+dir = "{{config_root}}"
+raw = true
+description = "Open a chapter notebook: mise run lab -- 02"
+run = "./scripts/lab.sh"
+
+[tasks.shell]
+dir = "{{config_root}}"
+raw = true
+description = "Open a chapter shell: mise run shell -- 02"
+run = "./scripts/shell.sh"
+
+[tasks.verify]
+dir = "{{config_root}}"
+description = "Check the book environments"
+run = "./scripts/verify.sh all"
+
+[tasks."gpu:verify"]
+dir = "{{config_root}}"
+description = "Check the optional NVIDIA environment"
+run = "./scripts/gpu-verify.sh"
+
+[tasks.doctor]
+dir = "{{config_root}}"
+description = "Check the host and project"
+run = "./scripts/doctor.sh"
+
+[tasks.status]
+dir = "{{config_root}}"
+description = "Show the working tree, storage, and containers"
+run = "./scripts/status.sh"
+
+[tasks.storage]
+dir = "{{config_root}}"
+description = "Show project and Docker storage use"
+run = "./scripts/storage.sh"
+
+[tasks.clean]
+dir = "{{config_root}}"
+description = "Show the project-only cleanup plan"
+run = "./scripts/cleanup.sh --plan"

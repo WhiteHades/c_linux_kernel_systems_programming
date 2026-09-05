@@ -1,0 +1,8 @@
+# The build context is intentionally narrow. Keep future private material out
+# even if someone drops it into this directory while experimenting.
+*
+!Dockerfile
+!*.sh
+!requirements-book.txt
+!requirements-yolov5.txt
+!versions-book-baseline.env

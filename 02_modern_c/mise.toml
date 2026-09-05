@@ -1,0 +1,26 @@
+[tasks.setup]
+description = "Build the contained C23 environment"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh setup local/modern-c:16"
+
+[tasks.build]
+description = "Build an author Make target or one C file"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/modern-c:16 bash /opt/study.sh build"
+
+[tasks.run]
+description = "Build and run one C file or executable"
+raw = true
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/modern-c:16 bash /opt/study.sh run"
+
+[tasks.verify]
+description = "Compile and run the starter example"
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/modern-c:16 bash /opt/study.sh verify"
+
+[tasks.shell]
+description = "Open the contained shell"
+raw = true
+dir = "{{config_root}}"
+run = "bash ../scripts/book-container.sh run local/modern-c:16 bash /opt/study.sh shell"
