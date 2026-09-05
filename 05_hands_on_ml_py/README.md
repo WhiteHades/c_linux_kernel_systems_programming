@@ -28,4 +28,6 @@ use the notebooks alongside the book's explanations and maths. exercises appear 
 
 on a fresh checkout, `mise run setup` fetches the tested author revision into `code/` and builds the contained environment. the image keeps compatibility versions for this book's older apis.
 
-book text, datasets, models, and container state stay local. files created in `code/` belong to your normal user; use its git repository to record your work.
+book text, datasets, models, and container state stay local. files created in `code/` belong to your normal user.
+
+`code/` has its own git history and is ignored by the parent repository. you can commit experiments locally there, but `origin` points to the author. pushing this workspace does not back up those edits to github.

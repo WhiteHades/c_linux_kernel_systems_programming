@@ -30,4 +30,6 @@ on a fresh checkout, `mise run setup` fetches the tested author revision into `c
 
 chapter 14 is android work; `mise run build -- 14` uses its own tools. the author checkout is missing files for 1 chapter 10 target. that target needs the missing upstream files before it can build.
 
-docker builds and runs the code. book text, datasets, models, and container state stay local. files created in `code/` belong to your normal user; use its git repository to record your work.
+docker builds and runs the code. book text, datasets, models, and container state stay local. files created in `code/` belong to your normal user.
+
+`code/` has its own git history and is ignored by the parent repository. you can commit experiments locally there, but `origin` points to the author. pushing this workspace does not back up those edits to github.

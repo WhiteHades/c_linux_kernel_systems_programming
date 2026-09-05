@@ -6,25 +6,28 @@ open the book's folder with `nvim .` in your usual tmux session. edit in lazyvim
 
 read a section, try it, and check the result. on a fresh clone, run `mise trust`, then `mise run setup` once. use `mise run verify` to check the tools.
 
-## reading order
+## book dashboard
 
-start after basic c, python, and shell practice. keep one main book active. the [full curriculum](https://github.com/WhiteHades/curriculum-audit/blob/main/CURRICULUM.md) covers the linux and maths background between these books.
+follow the [full curriculum](https://github.com/WhiteHades/curriculum-audit/blob/main/CURRICULUM.md) for reading order and prerequisites. keep one main book active. the checks below ran during setup on 2026-09-05; they don't mean every later exercise has been completed.
 
-| order | book and setup | what to do |
+| book and setup | practice | verified |
 | --- | --- | --- |
-| 1 | [common-sense python dsa](https://github.com/WhiteHades/leetcode_practice/tree/main/common_sense_dsa) | volume 1, then volume 2 |
-| 2 | [modern c, 3rd edition](02_modern_c/) | c23 and deeper c practice |
-| 3 | [introducing c++](03_introducing_cpp/) | modern c++ fundamentals |
-| 4 | [crafting interpreters](crafting_interpreters/) | build jlox, then clox |
-| 5 | [the little book about os development](little_os_book/) | build and boot an x86 os |
-| 6 | [linux kernel programming, 2nd edition](linux_kernel_programming/) | kernel labs in a disposable vm |
-| 7 | [bare-metal embedded c programming](bare_metal_embedded_c/) | firmware on the author's board |
-| 8 | [python machine learning](05_hands_on_ml_py/) | ml foundations before deep learning |
-| 9 | [deep learning with python, 3rd edition](https://github.com/WhiteHades/ml_engineering/tree/main/deep_learning_with_python) | keras models and experiments |
-| 10 | [c++ machine learning](04_hands_on_ml_cpp/) | native ml libraries |
-| 11 | [programming massively parallel processors](programming_massively_parallel_processors/) | cuda exercises and a final gpu project |
+| [common-sense python dsa](https://github.com/WhiteHades/leetcode_practice/tree/main/common_sense_dsa) | exercises in volumes 1 and 2 | 32 author test files |
+| [modern c, 3rd edition](02_modern_c/) | exercises and longer challenges | author's binaries target and c23 starter |
+| [introducing c++](03_introducing_cpp/) | chapter exercises | starter and multi-file examples |
+| [crafting interpreters](crafting_interpreters/) | build jlox, then clox; chapter challenges | 485 author interpreter tests; learner builds |
+| [the little book about os development](little_os_book/) | one growing x86 os project | bootable iso and terminal emulator |
+| [linux kernel programming, 2nd edition](linux_kernel_programming/) | questions and labs | 37 module build targets; guest boot and module load |
+| [bare-metal embedded c programming](bare_metal_embedded_c/) | firmware and peripheral projects | 10 author firmware builds; no board test |
+| [python machine learning](05_hands_on_ml_py/) | chapter code and experiments | imports in all 4 dependency profiles |
+| [deep learning with python, 3rd edition](https://github.com/WhiteHades/ml_engineering/tree/main/deep_learning_with_python) | notebook examples and own python files | jax, tensorflow and pytorch gpu training |
+| [c++ machine learning](04_hands_on_ml_cpp/) | worked examples through chapter 14 | chapter 1 build and eigen execution |
+| [programming massively parallel processors](programming_massively_parallel_processors/) | exercises, labs and a final gpu project | cuda kernel on the real gpu |
+| [networking all-in-one, 9th edition](networking_all_in_one/) | follow the reference procedures | isolated dns, ping, http and packet capture |
 
-[networking all-in-one, 9th edition](networking_all_in_one/) goes alongside linux study. start with its networking and protocol minibooks, then use later sections when needed.
+the two older ml setups retain compatibility versions. embedded work needs the author's board; some networking sections need windows, cloud accounts or equipment. missing publisher files and gpu memory limits are listed in the affected book readmes.
+
+builds reuse compiler caches. one repeated c++ build took 0.13 seconds after a 2.1-second uncached build; this measures compilation, not program speed.
 
 book texts, publisher downloads, datasets, model weights, vm disks, and container state stay local. git tracks setup files, short readmes, existing licensed examples, and my code. host tools use official omarchy commands; book dependencies run in docker.
 
