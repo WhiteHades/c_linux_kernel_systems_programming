@@ -1,6 +1,8 @@
 # systems programming practice
 
-book examples, exercises, and projects in c, c++, linux, systems and kernel programming, embedded programming, cuda, and cybersecurity.
+book examples, exercises, and projects in c, c++, linux, systems and kernel programming, embedded programming, and cybersecurity.
+
+cuda study, including programming massively parallel processors, lives in the sibling `../parallel_programming_cuda_cpp_rust/` repository.
 
 ## books in use
 
@@ -12,8 +14,7 @@ book examples, exercises, and projects in c, c++, linux, systems and kernel prog
 6. [bare metal embedded c programming](https://github.com/PacktPublishing/Bare-Metal-Embedded-C-Programming). [practice folder](bare_metal_embedded_c/).
 7. [hands on machine learning with c++](https://www.packtpub.com/en-us/product/hands-on-machine-learning-with-c-9781789952476). [practice folder](04_hands_on_ml_cpp/).
 8. [machine learning with pytorch and scikit learn](https://sebastianraschka.com/books/machine-learning-with-pytorch-and-scikit-learn/). [practice folder](05_hands_on_ml_py/).
-9. [programming massively parallel processors, fourth edition](https://www.educate.elsevier.com/book/details/9780323912310). [practice folder](programming_massively_parallel_processors/).
-10. [networking all in one for dummies, ninth edition](https://www.dummies.com/book/general-networking-33585/networking-all-in-one-for-dummies-281780/). [practice folder](networking_all_in_one/).
+9. [networking all in one for dummies, ninth edition](https://www.dummies.com/book/general-networking-33585/networking-all-in-one-for-dummies-281780/). [practice folder](networking_all_in_one/).
 
 ## other references
 
